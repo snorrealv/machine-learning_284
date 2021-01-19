@@ -376,3 +376,5 @@ FodyWeavers.xsd
 # Others (Uncertain Origin)
 .DS_Store
 .ipynb_checkpoints
+.vscode/
+.cache
