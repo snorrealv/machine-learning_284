@@ -8,7 +8,7 @@ Librarys needed:
 - jupyterlab
 
 linux/MacOs:
- pip install numpy scipy matplotlib ipython scikit-learn pandas pillow jupyterlab mglearn
+ pip install numpy scipy matplotlib ipython scikit-learn pandas pillow jupyterlab mglearn sympy
 (run in bash cmd, can be done from VScode terminal within venv aswell as witout venv)
 
 To run jypyterlab browser extention, run: jupyter-lab in bash console
