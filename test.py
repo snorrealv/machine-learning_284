@@ -54,7 +54,7 @@ node2.next = node3
       
 # when print is called, by default  
 #it calls the __str__ method 
-print(ll)  
+
 node1 = Node(10) 
 node2 = Node(15) 
 node3 = Node(20) 
