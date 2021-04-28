@@ -1,65 +1,33 @@
-class Node: 
-  
-    # Function to initialize the node object 
-    def __init__(self, data): 
-        self.data = data  # Assign data 
-        self.next = None  # Initialize next as null 
-  
-# Linked List class 
-class LinkedList: 
-    
-    # Function to initialize the Linked List object 
-    def __init__(self):  
-        self.head = None
-    
-    def __str__(self): 
-        
-        # defining a blank res variable 
-        res = "" 
-          
-        # initializing ptr to head 
-        ptr = self.head 
-          
-       # traversing and adding it to res 
-        while ptr: 
-            res += str(ptr.val) + ", "
-            ptr = ptr.next
-  
-       # removing trailing commas 
-        res = res.strip(", ") 
-          
-        # chen checking if  
-        # anything is present in res or not 
-        if len(res): 
-            return "[" + res + "]"
-        else: 
-            return "[]"
+from numpy import mean
+from numpy import std
+from pandas import read_csv
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import RepeatedStratifiedKFold
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+from matplotlib import pyplot
+# load dataset
+url = "https://raw.githubusercontent.com/jbrownlee/Datasets/master/sonar.csv"
+dataset = read_csv(url, header=None)
+data = dataset.values
 
-# defining linked list 
-ll = LinkedList() 
-  
-# defining nodes 
-# defining linked list 
-ll = LinkedList() 
+# separate into input and output columns
+X, y = data[:, :-1], data[:, -1]
 
-# defining nodes 
-node1 = Node(10) 
-node2 = Node(15) 
-node3 = Node(20) 
-  
-# connecting the nodes 
-ll.head = node1 
-node1.next = node2 
-node2.next = node3 
-      
-# when print is called, by default  
-#it calls the __str__ method 
+# ensure inputs are floats and output is an integer label
+X = X.astype('float32')
+y = LabelEncoder().fit_transform(y.astype('str'))
 
-node1 = Node(10) 
-node2 = Node(15) 
-node3 = Node(20) 
-  
-# connecting the nodes 
-ll.head = node1 
-node1.next = node2 
-node2.next = node3 
+# define the pipeline
+trans = StandardScaler()
+model = KNeighborsClassifier()
+pipeline = Pipeline(steps=[('t', trans), ('m', model)])
+
+# evaluate the pipeline
+cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=1)
+n_scores = cross_val_score(pipeline, X, y, scoring='accuracy', cv=cv, n_jobs=-1, error_score='raise')
+
+# report pipeline performance
+print('Accuracy: %.3f (%.3f)' % (mean(n_scores), std(n_scores)))
