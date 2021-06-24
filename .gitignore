@@ -378,3 +378,5 @@ FodyWeavers.xsd
 .ipynb_checkpoints
 .vscode/
 .cache
+test.py
+cache
